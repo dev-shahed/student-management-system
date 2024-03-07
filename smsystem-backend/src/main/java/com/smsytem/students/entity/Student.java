@@ -22,19 +22,19 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "student_name")
+    @Column(name = "student_name", nullable = false)
     private String name;
 
-    @Column(name = "student_class")
+    @Column(name = "student_class", nullable = false)
     private String studentClass;
 
-    @Column(name = "roll_number")
+    @Column(name = "roll_number", nullable = false, unique = true)
     private int roll;
 
     @Column(name = "height")
     private double height;
     
-    @Column(name = "date_of_birth")
+    @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
     @Column(name = "total_fees")
