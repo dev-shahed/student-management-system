@@ -15,7 +15,7 @@ public class StudentDTO {
     private Long id;
     private String name;
     private String studentClass;
-    private String roll;
+    private int roll;
     private double height;
     private LocalDate dateOfBirth;
     private double totalFees;

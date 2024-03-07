@@ -29,7 +29,7 @@ public class Student {
     private String studentClass;
 
     @Column(name = "roll_number")
-    private String roll;
+    private int roll;
 
     @Column(name = "height")
     private double height;
