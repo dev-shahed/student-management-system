@@ -16,6 +16,7 @@ import com.smsytem.students.exception.ApiResponse;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.StudentService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -53,7 +54,7 @@ public class StudentController {
 
     // retrieve single student.
     @GetMapping("/{id}")
-    public ResponseEntity<?> studentById(@PathVariable Long id) {
+    public ResponseEntity<?> studentById(@PathVariable Long id, HttpServletRequest request) {
         try {
             StudentDTO student = studentService.getStudentById(id);
             return new ResponseEntity<>(student, HttpStatus.OK);
