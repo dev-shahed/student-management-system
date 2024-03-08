@@ -43,9 +43,6 @@ public class Student {
     @Column(name = "fees_paid")
     private double feesPaid;
 
-    @Column(name = "fees_due")
-    private double feesDue;
-
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 

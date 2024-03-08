@@ -41,4 +41,24 @@ public class StudentServiceImpl implements StudentService {
                 () -> new ResourceNotFoundException("Student is not exist with the given id: " + id));
         return StudentMapper.mapToStudentDto(theStudent);
     }
+
+    @Override
+    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
+        Student student = studentRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Student is not exist with the given id: " + id));
+
+        student.setName(studentDTO.getName());
+        student.setStudentClass(studentDTO.getStudentClass());
+        student.setRoll(studentDTO.getRoll());
+        student.setFeesPaid(studentDTO.getFeesPaid());
+        student.setPhoneNumber(studentDTO.getPhoneNumber());
+        Student updatedStudent = studentRepository.save(student);
+        return StudentMapper.mapToStudentDto(updatedStudent);
+    }
+
+    @Override
+    public void deleteStudent(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteStudent'");
+    }
 }

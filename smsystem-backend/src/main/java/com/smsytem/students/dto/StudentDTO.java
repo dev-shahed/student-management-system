@@ -20,7 +20,6 @@ public class StudentDTO {
     private LocalDate dateOfBirth;
     private double totalFees;
     private double feesPaid;
-    private double feesDue;
     private String phoneNumber;
     private String imageLink;
 }

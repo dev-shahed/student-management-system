@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +59,17 @@ public class StudentController {
         try {
             StudentDTO student = studentService.getStudentById(id);
             return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
+        }
+    }
+
+    // update an existing student.
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+        try {
+            StudentDTO updatedStudent = studentService.updateStudent(id, studentDTO);
+            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         }

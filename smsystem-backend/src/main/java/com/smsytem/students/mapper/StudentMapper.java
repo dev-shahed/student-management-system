@@ -14,7 +14,6 @@ public class StudentMapper {
                 student.getDateOfBirth(),
                 student.getTotalFees(),
                 student.getFeesPaid(),
-                student.getFeesDue(),
                 student.getPhoneNumber(),
                 student.getImageLink());
     }
@@ -29,7 +28,6 @@ public class StudentMapper {
                 studentDTO.getDateOfBirth(),
                 studentDTO.getTotalFees(),
                 studentDTO.getFeesPaid(),
-                studentDTO.getFeesDue(),
                 studentDTO.getPhoneNumber(),
                 studentDTO.getImageLink());
     }
