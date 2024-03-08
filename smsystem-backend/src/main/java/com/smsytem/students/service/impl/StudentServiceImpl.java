@@ -58,7 +58,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteStudent'");
+        Student studentToDelete = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + id));
+        studentRepository.deleteById(id);
+        StudentMapper.mapToStudentDto(studentToDelete);
     }
 }
