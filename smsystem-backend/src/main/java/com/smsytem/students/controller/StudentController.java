@@ -1,7 +1,10 @@
 package com.smsytem.students.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smsytem.students.dto.StudentDTO;
 import com.smsytem.students.exception.ApiResponse;
+import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.StudentService;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +22,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("api/students")
 public class StudentController {
     private StudentService studentService;
-    
+
     @PostMapping()
     public ResponseEntity<?> creatingStudent(@RequestBody StudentDTO studentDTO) {
         try {
@@ -30,4 +34,19 @@ public class StudentController {
                     .body(ApiResponse.error("Failed to create student: " + e.getMessage()));
         }
     }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllStudents() {
+        try {
+            List<StudentDTO> students = studentService.getAllStudents();
+            return ResponseEntity.ok(students);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Failed to retrieve students: " + e.getMessage()));
+        }
+    }
+
 }
