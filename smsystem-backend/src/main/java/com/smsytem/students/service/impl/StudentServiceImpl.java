@@ -35,4 +35,10 @@ public class StudentServiceImpl implements StudentService {
         return students.stream().map(StudentMapper::mapToStudentDto).collect(Collectors.toList());
     }
 
+    @Override
+    public StudentDTO getStudentById(Long id) {
+        Student theStudent = studentRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Student is not exist with the given id: " + id));
+        return StudentMapper.mapToStudentDto(theStudent);
+    }
 }
