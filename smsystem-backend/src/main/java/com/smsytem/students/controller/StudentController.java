@@ -87,7 +87,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to delete employee"));
+                    .body(ApiResponse.error("Failed to delete student"));
         }
     }
 
