@@ -70,9 +70,13 @@ public class StudentController {
     public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
         try {
             StudentDTO updatedStudent = studentService.updateStudent(id, studentDTO);
-            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiResponse.success("Student updated successfully", updatedStudent));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Failed to update student"));
         }
     }
 
