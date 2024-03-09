@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +35,7 @@ public class Student {
 
     @Column(name = "height")
     private double height;
-    
+
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
@@ -43,9 +45,18 @@ public class Student {
     @Column(name = "fees_paid")
     private double feesPaid;
 
+    @Column(name = "fees_due")
+    private double feesDue;
+
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(name = "image_link")
     private String imageLink;
+
+    @PrePersist
+    @PreUpdate
+    private void calculateFeesDue() {
+        this.feesDue = (totalFees - feesPaid);
+    }
 }
