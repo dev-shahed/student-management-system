@@ -32,6 +32,8 @@ public class StudentServiceImpl implements StudentService {
         if (students.isEmpty()) {
             throw new ResourceNotFoundException("No student found! Please add student");
         }
+        //update all students feedDue column
+        students.forEach(Student::calculateFeesDue);
         return students.stream().map(StudentMapper::mapToStudentDto).collect(Collectors.toList());
     }
 
@@ -39,6 +41,7 @@ public class StudentServiceImpl implements StudentService {
     public StudentDTO getStudentById(Long id) {
         Student theStudent = studentRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Student is not exist with the given id: " + id));
+                theStudent.calculateFeesDue();
         return StudentMapper.mapToStudentDto(theStudent);
     }
 

@@ -7,9 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,7 +44,7 @@ public class Student {
     @Column(name = "fees_paid")
     private double feesPaid;
 
-    @Column(name = "fees_due")
+    @Transient
     private double feesDue;
 
     @Column(name = "phone_number", nullable = false, unique = true)
@@ -54,9 +53,7 @@ public class Student {
     @Column(name = "image_link")
     private String imageLink;
 
-    @PrePersist
-    @PreUpdate
-    private void calculateFeesDue() {
+    public void calculateFeesDue() {
         this.feesDue = (totalFees - feesPaid);
     }
 }
