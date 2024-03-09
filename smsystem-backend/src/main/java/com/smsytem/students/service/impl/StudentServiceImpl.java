@@ -55,6 +55,7 @@ public class StudentServiceImpl implements StudentService {
         student.setRoll(studentDTO.getRoll());
         student.setFeesPaid(studentDTO.getFeesPaid());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
+        student.calculateFeesDue();
         Student updatedStudent = studentRepository.save(student);
         return StudentMapper.mapToStudentDto(updatedStudent);
     }
