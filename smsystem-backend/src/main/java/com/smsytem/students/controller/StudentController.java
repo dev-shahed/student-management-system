@@ -44,7 +44,8 @@ public class StudentController {
     public ResponseEntity<?> getAllStudents() {
         try {
             List<StudentDTO> students = studentService.getAllStudents();
-            return ResponseEntity.ok(students);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiResponse.success("fetched successfully", students));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error(e.getMessage()));
