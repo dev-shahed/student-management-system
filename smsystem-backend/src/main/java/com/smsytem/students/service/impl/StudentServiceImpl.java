@@ -54,6 +54,7 @@ public class StudentServiceImpl implements StudentService {
                 () -> new ResourceNotFoundException("Student is not exist with the given id: " + id));
 
         student.setFirstName(studentDTO.getFirstName());
+        student.setLastName(studentDTO.getLastName());
         student.setStudentClass(studentDTO.getStudentClass());
         student.setRoll(studentDTO.getRoll());
         student.setFeesPaid(studentDTO.getFeesPaid());
