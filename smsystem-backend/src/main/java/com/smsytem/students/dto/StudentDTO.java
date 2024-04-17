@@ -12,15 +12,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentDTO {
-    private Long id;
-    private String name;
+    private Long studentID;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String studentClass;
     private int roll;
     private double height;
     private LocalDate dateOfBirth;
     private double totalFees;
     private double feesPaid;
-    private double feesDue;
     private String phoneNumber;
     private String imageLink;
+    private String address;
+    private String city;
 }
