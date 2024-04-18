@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smsytem.students.dto.StudentDTO;
+import com.smsytem.students.dto.TeacherDTO;
 import com.smsytem.students.exception.ApiResponse;
 import com.smsytem.students.exception.ResourceNotFoundException;
-import com.smsytem.students.service.StudentService;
+import com.smsytem.students.service.TeacherService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -25,76 +25,77 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/students")
-public class StudentController {
-    private StudentService studentService;
+@RequestMapping("api/teachers")
+public class TeacherController {
+    private TeacherService teacherService;
 
     @PostMapping()
-    public ResponseEntity<?> creatingStudent(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<?> creatingTeacher(@RequestBody TeacherDTO teacherDTO) {
+        System.out.println(teacherDTO);
         try {
-            StudentDTO createdStudent = studentService.createStudent(studentDTO);
+            TeacherDTO createdTeacher = teacherService.addTeacher(teacherDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.success("Student created successfully", createdStudent));
+                    .body(ApiResponse.success("teacher created successfully", createdTeacher));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to create student: " + e.getMessage()));
+                    .body(ApiResponse.error("Failed to create Teacher: " + e.getMessage()));
         }
     }
 
-    // retrieve all students..
+    // retrieve all Teachers..
     @GetMapping()
-    public ResponseEntity<?> getAllStudents() {
+    public ResponseEntity<?> getAllTeachers() {
         try {
-            List<StudentDTO> students = studentService.getAllStudents();
+            List<TeacherDTO> teachers = teacherService.allTeacher();
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ApiResponse.success("fetched successfully", students));
+                    .body(ApiResponse.success("fetched successfully", teachers));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to retrieve students: " + e.getMessage()));
+                    .body(ApiResponse.error("Failed to retrieve Teachers: " + e.getMessage()));
         }
     }
 
-    // retrieve single student.
+    // retrieve single Teacher.
     @GetMapping("/{id}")
-    public ResponseEntity<?> studentById(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> teacherById(@PathVariable Long id, HttpServletRequest request) {
         try {
-            StudentDTO student = studentService.getStudentById(id);
-            return new ResponseEntity<>(student, HttpStatus.OK);
+            TeacherDTO teacher = teacherService.getTeacherById(id);
+            return new ResponseEntity<>(teacher, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         }
     }
 
-    // update an existing student.
+    // update an existing Teacher.
     @PutMapping("/{id}")
-    public ResponseEntity<?> studentUpdate(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<?> updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO teacherDTO) {
         try {
-            StudentDTO updatedStudent = studentService.updateStudent(id, studentDTO);
+            TeacherDTO updatedTeacher = teacherService.updateTeacher(id, teacherDTO);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ApiResponse.success("Student updated successfully", updatedStudent));
+                    .body(ApiResponse.success("Teacher updated successfully", updatedTeacher));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to update student"));
+                    .body(ApiResponse.error("Failed to update Teacher"));
         }
     }
 
-    // delete an student..
+    // delete an Teacher..
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
         try {
-            studentService.deleteStudent(id);
+            teacherService.deleteTeacher(id);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(ApiResponse.success("Student deleted successfully", null));
+                    .body(ApiResponse.success("Teacher deleted successfully", null));
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.error("Failed to delete student"));
+                    .body(ApiResponse.error("Failed to delete Teacher"));
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import com.smsytem.students.dto.TeacherDTO;
 import com.smsytem.students.entity.Teacher;
@@ -11,6 +12,10 @@ import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.repository.TeacherRepository;
 import com.smsytem.students.service.TeacherService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+@Service
 public class TeacherServiceImpl implements TeacherService {
 
     private TeacherRepository teacherRepository;
@@ -18,7 +23,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherDTO addTeacher(TeacherDTO teacherDTO) {
+        System.out.println(teacherDTO);
         Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
+        System.out.println(teacher);
         Teacher savedTeacher = teacherRepository.save(teacher);
         TeacherDTO savedTeacherDTO = modelMapper.map(savedTeacher, TeacherDTO.class);
         return savedTeacherDTO;
