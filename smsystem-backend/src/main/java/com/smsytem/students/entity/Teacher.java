@@ -1,6 +1,6 @@
 package com.smsytem.students.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,7 +41,7 @@ public class Teacher {
     private double experience;
 
     @Column(name = "joining_date")
-    private Date joiningDate;
+    private LocalDate joiningDate;
 
     @Column(name = "salary", nullable = false)
     private double salary;

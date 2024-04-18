@@ -1,6 +1,6 @@
 package com.smsytem.students.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class TeacherDTO {
     private String phoneNumber;
     private String qualification;
     private double experience;
-    private Date joiningDate;
+    private LocalDate joiningDate;
     private double salary;
     private String salaryStatus;
     private String imageLink;

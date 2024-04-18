@@ -17,7 +17,7 @@ public class SpringSecurityConfig {
     // private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").permitAll()
                         .anyRequest()
