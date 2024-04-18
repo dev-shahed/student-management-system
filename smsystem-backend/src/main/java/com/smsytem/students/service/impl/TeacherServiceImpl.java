@@ -23,9 +23,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherDTO addTeacher(TeacherDTO teacherDTO) {
-        System.out.println(teacherDTO);
         Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
-        System.out.println(teacher);
         Teacher savedTeacher = teacherRepository.save(teacher);
         TeacherDTO savedTeacherDTO = modelMapper.map(savedTeacher, TeacherDTO.class);
         return savedTeacherDTO;

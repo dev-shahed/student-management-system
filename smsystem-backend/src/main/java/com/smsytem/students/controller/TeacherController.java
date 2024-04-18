@@ -31,7 +31,6 @@ public class TeacherController {
 
     @PostMapping()
     public ResponseEntity<?> creatingTeacher(@RequestBody TeacherDTO teacherDTO) {
-        System.out.println(teacherDTO);
         try {
             TeacherDTO createdTeacher = teacherService.addTeacher(teacherDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
