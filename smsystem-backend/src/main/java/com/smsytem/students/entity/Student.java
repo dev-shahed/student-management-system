@@ -29,7 +29,7 @@ public class Student {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email",  nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "student_class", nullable = false)
@@ -61,6 +61,22 @@ public class Student {
 
     @Column(name = "city", nullable = false)
     private String city;
+
+    // Guardian Information
+    @Column(name = "guardian_first_name", nullable = false)
+    private String guardianFirstName;
+
+    @Column(name = "guardian_last_name", nullable = false)
+    private String guardianLastName;
+
+    @Column(name = "guardian_phone_number", nullable = false)
+    private String guardianPhoneNumber;
+
+    @Column(name = "guardian_email", nullable = false)
+    private String guardianEmail;
+
+    @Column(name = "guardian_relationship", nullable = false)
+    private String relationship;
 
     @Transient
     private double feesDue;

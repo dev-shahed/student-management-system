@@ -27,4 +27,11 @@ public class StudentDTO {
     private String imageLink;
     private String address;
     private String city;
+
+    // Guardian Information
+    private String guardianFirstName;
+    private String guardianLastName;
+    private String guardianPhoneNumber;
+    private String guardianEmail;
+    private String Relationship;
 }
