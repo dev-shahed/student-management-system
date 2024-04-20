@@ -2,6 +2,7 @@ package com.smsytem.students.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 @RequestMapping("api/students")
 public class StudentController {
+    @Autowired
     private StudentService studentService;
 
     @PostMapping()
@@ -46,6 +48,7 @@ public class StudentController {
     public ResponseEntity<?> getAllStudents() {
         try {
             List<StudentDTO> students = studentService.getAllStudents();
+            System.out.println(students);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(ApiResponse.success("fetched successfully", students));
         } catch (ResourceNotFoundException e) {

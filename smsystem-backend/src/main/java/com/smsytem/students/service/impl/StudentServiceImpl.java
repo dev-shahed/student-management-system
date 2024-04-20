@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.smsytem.students.dto.ClassDTO;
 import com.smsytem.students.dto.StudentDTO;
+import com.smsytem.students.entity.ClassOrSection;
 import com.smsytem.students.entity.Student;
 import com.smsytem.students.exception.ResourceNotFoundException;
+import com.smsytem.students.repository.ClassRepository;
 import com.smsytem.students.repository.StudentRepository;
 import com.smsytem.students.service.StudentService;
 
@@ -17,12 +21,18 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
+    @Autowired
     private StudentRepository studentRepository;
+    private ClassRepository classRepository;
     private ModelMapper modelMapper;
 
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
         Student student = modelMapper.map(studentDTO, Student.class);
+        ClassOrSection classOrSection = classRepository.findById(studentDTO.getClassID())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "class doesn't exist with the id " + studentDTO.getClassID()));
+        student.setStudentClass(classOrSection);
         Student savedStudent = studentRepository.save(student);
         StudentDTO savedStudentDTO = modelMapper.map(savedStudent, StudentDTO.class);
         return savedStudentDTO;
@@ -36,8 +46,19 @@ public class StudentServiceImpl implements StudentService {
         }
         // update all students feedDue column
         students.forEach(Student::calculateFeesDue);
-        return students.stream().map(student -> modelMapper.map(student, StudentDTO.class))
+        return students.stream()
+                .map(student -> {
+                    StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+                    ClassOrSection classInfo = student.getStudentClass();
+                    ClassDTO classDTO = modelMapper.map(classInfo, ClassDTO.class);
+                    studentDTO.setStudentClass(classDTO);
+                    return studentDTO;
+                })
                 .collect(Collectors.toList());
+        // return students.stream().map(student -> modelMapper.map(student,
+        // StudentDTO.class))
+        // .collect(Collectors.toList());
+
     }
 
     @Override
@@ -55,7 +76,7 @@ public class StudentServiceImpl implements StudentService {
 
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
-        student.setStudentClass(studentDTO.getStudentClass());
+        student.setStudentID(studentDTO.getClassID());
         student.setRoll(studentDTO.getRoll());
         student.setFeesPaid(studentDTO.getFeesPaid());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
