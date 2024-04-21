@@ -1,5 +1,8 @@
 package com.smsytem.students.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ public class ClassDTO {
     private Long classID;
     private String className;
     private String descriptions;
-    // private Teacher classTeacher;
-
+    @JsonInclude(Include.NON_NULL)
+    private Long teacherID;
+    private TeacherDTO classTeacher;
 }

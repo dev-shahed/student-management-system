@@ -2,7 +2,8 @@ package com.smsytem.students.dto;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class StudentDTO {
     private String firstName;
     private String lastName;
     private String email;
-    @JsonIgnore
+    @JsonInclude(Include.NON_NULL)
     private Long classID;
     private int roll;
     private double height;
