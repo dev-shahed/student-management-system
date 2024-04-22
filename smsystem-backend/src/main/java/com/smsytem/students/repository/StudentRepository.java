@@ -8,4 +8,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // @Query("SELECT s FROM Student s JOIN FETCH s.studentClass WHERE s.classId = :classId")
     // Student findByClassID(@Param("classId") Long classID);
 
+    // @Query("SELECT s, c FROM Student s JOIN s.studentClass c")
+    // List<Object[]> findAllStudentsWithClasses();
+    
+
 }

@@ -55,10 +55,6 @@ public class StudentServiceImpl implements StudentService {
                     return studentDTO;
                 })
                 .collect(Collectors.toList());
-        // return students.stream().map(student -> modelMapper.map(student,
-        // StudentDTO.class))
-        // .collect(Collectors.toList());
-
     }
 
     @Override
@@ -76,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
 
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
-        student.setStudentID(studentDTO.getClassID());
+        student.setStudentID(studentDTO.getStudentID());
         student.setRoll(studentDTO.getRoll());
         student.setFeesPaid(studentDTO.getFeesPaid());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
