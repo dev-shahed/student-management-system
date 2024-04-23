@@ -1,5 +1,7 @@
 package com.smsytem.students.dto;
 
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClassDTO {
-    private Long classID;
-    private String className;
+public class SubjectDTO {
+    private Long subjectID;
+    private String subjectName;
     private String descriptions;
-    private Long teacherID;
-    private TeacherDTO classTeacher;
+    private TeacherDTO thoughtBy;
+    private Long classID;
+    private Set<String> days;
+
+    // Getters and setters
 }

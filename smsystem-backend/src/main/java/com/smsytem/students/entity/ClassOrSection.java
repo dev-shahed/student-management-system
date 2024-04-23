@@ -30,6 +30,6 @@ public class ClassOrSection {
     private String descriptions;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "class_teacher")
+    @JoinColumn(name = "class_teacher", nullable = false)
     private Teacher classTeacher;
 }

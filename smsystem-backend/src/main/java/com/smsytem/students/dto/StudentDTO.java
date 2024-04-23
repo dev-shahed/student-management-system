@@ -2,8 +2,6 @@ package com.smsytem.students.dto;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +30,6 @@ public class StudentDTO {
    
     private Long classID;
     // Include a reference to the class object
-    @JsonProperty
     private ClassDTO studentClass;
     // Guardian Information
     private String guardianFirstName;
