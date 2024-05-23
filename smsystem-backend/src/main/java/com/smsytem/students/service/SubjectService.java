@@ -7,9 +7,9 @@ import com.smsytem.students.dto.SubjectDTO;
 public interface SubjectService {
     SubjectDTO addSubject(SubjectDTO subjectDTO);
 
-    // List<SubjectDTO> getSubjectById(Long id);
+    SubjectDTO getSubjectById(Long id);
 
     List<SubjectDTO> getAllSubjects();
 
-    // void deleteSubject(Long id);
+    void deleteSubject(Long id);
 }

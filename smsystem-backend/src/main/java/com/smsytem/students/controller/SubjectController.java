@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import com.smsytem.students.exception.ApiResponse;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.SubjectService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -53,30 +56,30 @@ public class SubjectController {
         }
     }
 
-    // // retrieve single guardian
-    // @GetMapping("/{id}")
-    // public ResponseEntity<?> ClassOrSectionById(@PathVariable Long id, HttpServletRequest request) {
-    //     try {
-    //         ClassDTO theClass = classOrSectionService.getClassById(id);
-    //         return new ResponseEntity<>(theClass, HttpStatus.OK);
-    //     } catch (ResourceNotFoundException ex) {
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
-    //     }
-    // }
+    // retrieve single subject
+    @GetMapping("/{id}")
+    public ResponseEntity<?> subjectById(@PathVariable Long id, HttpServletRequest request) {
+        try {
+            SubjectDTO theSub = subjectService.getSubjectById(id);
+            return new ResponseEntity<>(theSub, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
+        }
+    }
 
-    // // delete an guardian
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> deleteClassOrSection(@PathVariable Long id) {
-    //     try {
-    //         classOrSectionService.deleteClass(id);
-    //         return ResponseEntity.status(HttpStatus.OK)
-    //                 .body(ApiResponse.success("class or section deleted successfully", null));
-    //     } catch (ResourceNotFoundException ex) {
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    //                 .body(ApiResponse.error("Failed to delete class or section"));
-    //     }
-    // }
+    // delete an subjects
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSubject(@PathVariable Long id) {
+        try {
+            subjectService.deleteSubject(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiResponse.success("The subject deleted successfully", null));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Failed to delete subject"));
+        }
+    }
 
 }

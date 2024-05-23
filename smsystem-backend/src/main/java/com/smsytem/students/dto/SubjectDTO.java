@@ -21,6 +21,4 @@ public class SubjectDTO {
     private TeacherDTO thoughtBy;
     private Long classID;
     private Set<String> days;
-
-    // Getters and setters
 }
