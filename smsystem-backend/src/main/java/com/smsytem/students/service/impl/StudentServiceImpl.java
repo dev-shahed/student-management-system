@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smsytem.students.dto.ClassDTO;
@@ -21,7 +20,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
-    @Autowired
     private StudentRepository studentRepository;
     private ClassRepository classRepository;
     private ModelMapper modelMapper;

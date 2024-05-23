@@ -25,5 +25,4 @@ public class TeacherDTO {
     private String imageLink;
     private String address;
     private String nationality;
-
 }
