@@ -37,12 +37,14 @@ public class ClassServiceImpl implements ClassOrSectionService {
                     .orElseThrow(() -> new ResourceNotFoundException("Subject doesn't exist!"));
             subjects.add(subject);
         }
-        Teacher teacher = teacherRepository.findById(classDTO.getTeacherID())
-                .orElseThrow(() -> new ResourceNotFoundException("teacher dones't exits!"));
-        theClass.setClassTeacher(teacher);
         theClass.setSubjects(subjects);
+        Teacher teacher = teacherRepository.findById(classDTO.getTeacherID())
+                .orElseThrow(() -> new ResourceNotFoundException("teacher doesn't exits!"));
+        theClass.setClassTeacher(teacher);
         ClassOrSection savedClass = classRepository.save(theClass);
-        return modelMapper.map(savedClass, ClassDTO.class);
+        ClassDTO savedClassDTO = modelMapper.map(savedClass, ClassDTO.class);
+        savedClassDTO.setSubjectIDs(classDTO.getSubjectIDs()); // Set the subjectIDs in the DTO
+        return savedClassDTO;
     }
 
     @Override
