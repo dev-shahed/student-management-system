@@ -29,7 +29,7 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @PostMapping()
-    public ResponseEntity<?> creatingClass(@RequestBody SubjectDTO subjectDTO) {
+    public ResponseEntity<?> creatingSubject(@RequestBody SubjectDTO subjectDTO) {
         try {
             SubjectDTO createdSubject = subjectService.addSubject(subjectDTO);
             return ResponseEntity.status(HttpStatus.CREATED)

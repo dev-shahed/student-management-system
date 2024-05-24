@@ -3,7 +3,6 @@ package com.smsytem.students.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +29,14 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public SubjectDTO addSubject(SubjectDTO subjectDTO) {
         Subject sub = modelMapper.map(subjectDTO, Subject.class);
-        Teacher teacher = teacherRepository.findById(subjectDTO.getThoughtBy().getTeacherID())
-                .orElseThrow(() -> new ResourceNotFoundException("teacher doesn't exits!"));
+
+        // Convert thoughtBy (Teacher ID) to Teacher entity
+        Teacher teacher = teacherRepository.findById(subjectDTO.getTeacherID())
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher doesn't exist!"));
         sub.setThoughtBy(teacher);
+
         Subject savedSubject = subjectRepository.save(sub);
-        SubjectDTO savedSubjectDTO = modelMapper.map(savedSubject, SubjectDTO.class);
-        return savedSubjectDTO;
+        return modelMapper.map(savedSubject, SubjectDTO.class);
     }
 
     @Override
@@ -60,10 +61,6 @@ public class SubjectServiceImpl implements SubjectService {
     public void deleteSubject(Long id) {
         Subject subjectDelete = subjectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with ID: " + id));
-        // manually initialize the lazy-loaded collections before performing operations
-        // on the entity. This ensures that collections are loaded within an active
-        // session, preventing the exception.
-        Hibernate.initialize(subjectDelete.getClasses());
         subjectRepository.deleteById(id);
         modelMapper.map(subjectDelete, SubjectDTO.class);
     }

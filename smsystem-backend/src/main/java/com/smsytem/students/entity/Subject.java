@@ -12,8 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,23 +34,15 @@ public class Subject {
     @Column(name = "descriptions")
     private String descriptions;
 
+    @Column(name = "teacher_id", nullable = false)
+    private Long teacherID;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "thought_by", nullable = false)
+    @JoinColumn(name = "thought_by")
     private Teacher thoughtBy;
 
-    // Assuming a subject can be taught to multiple classes
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "class_subject",
-               joinColumns = @JoinColumn(name = "subject_id"),
-               inverseJoinColumns = @JoinColumn(name = "class_id"))
-    private Set<ClassOrSection> classes = new HashSet<>();
-
-    // Assuming a subject can be taught on specific days
     @ElementCollection
-    @CollectionTable(name = "subject_days",
-                     joinColumns = @JoinColumn(name = "subject_id"))
+    @CollectionTable(name = "subject_days", joinColumns = @JoinColumn(name = "subject_id"))
     @Column(name = "day")
     private Set<String> days = new HashSet<>();
-
-    // Getters and setters
 }

@@ -1,5 +1,7 @@
 package com.smsytem.students.dto;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +20,5 @@ public class ClassDTO {
     private Long teacherID;
     @JsonIgnoreProperties({"joiningDate", "salary", "salaryStatus", "imageLink", "address", "nationality"})
     private TeacherDTO classTeacher;
+    private Set<Long> subjectIDs;
 }
