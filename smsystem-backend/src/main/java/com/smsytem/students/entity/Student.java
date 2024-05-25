@@ -36,7 +36,7 @@ public class Student {
     private String email;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "classID")
+    @JoinColumn(name = "student_class")
     private ClassOrSection studentClass;
 
     @Column(name = "roll_number", nullable = false, unique = true)

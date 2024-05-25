@@ -37,23 +37,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDTO> getAllStudents() {
-        List<Student> students = studentRepository.findAll();
-        if (students.isEmpty()) {
-            throw new ResourceNotFoundException("No student found! Please add student");
-        }
-        // update all students feedDue column
-        students.forEach(Student::calculateFeesDue);
-        return students.stream()
+public List<StudentDTO> getAllStudents() {
+    List<Student> students = studentRepository.findAll();
+    if (students.isEmpty()) {
+        throw new ResourceNotFoundException("No student found! Please add student");
+    }
+    // Update all students feesDue column
+    students.forEach(Student::calculateFeesDue);
+    return students.stream()
                 .map(student -> {
                     StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
-                    ClassOrSection classInfo = student.getStudentClass();
+                    // Fetch class information using the provided class ID
+                    ClassOrSection classInfo = studentRepository.findClassByClassID(studentDTO.getClassID());
+
+                    // Map classInfo to ClassDTO
                     ClassDTO classDTO = modelMapper.map(classInfo, ClassDTO.class);
+
+                    // Set class information into StudentDTO
                     studentDTO.setStudentClass(classDTO);
+
                     return studentDTO;
                 })
                 .collect(Collectors.toList());
-    }
+}
+
 
     @Override
     public StudentDTO getStudentById(Long id) {

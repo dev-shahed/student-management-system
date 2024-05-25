@@ -25,9 +25,7 @@ public class StudentDTO {
     private String phoneNumber;
     private String imageLink;
     private String address;
-    private String city;
-
-   
+    private String city;   
     private Long classID;
     // Include a reference to the class object
     private ClassDTO studentClass;
