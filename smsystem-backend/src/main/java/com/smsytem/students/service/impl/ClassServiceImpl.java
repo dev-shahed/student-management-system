@@ -30,20 +30,16 @@ public class ClassServiceImpl implements ClassOrSectionService {
     @Override
     public ClassDTO addClass(ClassDTO classDTO) {
         ClassOrSection theClass = modelMapper.map(classDTO, ClassOrSection.class);
-
         // Convert subject IDs to Subject entities
         Set<Subject> subjects = classDTO.getSubjectIDs().stream()
                 .map(subjectID -> subjectRepository.findById(subjectID)
                         .orElseThrow(() -> new ResourceNotFoundException("Subject doesn't exist!")))
                 .collect(Collectors.toSet());
-
         theClass.setSubjects(subjects);
         Teacher teacher = teacherRepository.findById(classDTO.getTeacherID())
                 .orElseThrow(() -> new ResourceNotFoundException("Teacher doesn't exist!"));
         theClass.setClassTeacher(teacher);
-
         ClassOrSection savedClass = classRepository.save(theClass);
-
         ClassDTO savedClassDTO = modelMapper.map(savedClass, ClassDTO.class);
         savedClassDTO.setSubjectIDs(classDTO.getSubjectIDs());
         return savedClassDTO;
