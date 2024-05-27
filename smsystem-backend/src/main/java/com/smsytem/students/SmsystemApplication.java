@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SmsystemApplication {
-
 	@Bean
 	ModelMapper modelMapper() {
 		return new ModelMapper();

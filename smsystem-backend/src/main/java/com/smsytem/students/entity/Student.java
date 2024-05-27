@@ -35,6 +35,9 @@ public class Student {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "class_id", nullable = false)
+    private Long classID;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_class")
     private ClassOrSection studentClass;

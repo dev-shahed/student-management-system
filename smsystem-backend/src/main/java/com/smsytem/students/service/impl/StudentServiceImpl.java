@@ -1,6 +1,7 @@
 package com.smsytem.students.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import com.smsytem.students.dto.ClassDTO;
 import com.smsytem.students.dto.StudentDTO;
 import com.smsytem.students.entity.ClassOrSection;
 import com.smsytem.students.entity.Student;
+import com.smsytem.students.entity.Subject;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.repository.ClassRepository;
 import com.smsytem.students.repository.StudentRepository;
@@ -49,13 +51,18 @@ public List<StudentDTO> getAllStudents() {
                     StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
                     // Fetch class information using the provided class ID
                     ClassOrSection classInfo = studentRepository.findClassByClassID(studentDTO.getClassID());
-
                     // Map classInfo to ClassDTO
                     ClassDTO classDTO = modelMapper.map(classInfo, ClassDTO.class);
 
+                    //get subjects id's for a specific students
+                    if (classInfo.getSubjects() != null) {
+                        Set<Long> subjectIDs = classInfo.getSubjects().stream()
+                                .map(Subject::getSubjectID)
+                                .collect(Collectors.toSet());
+                        classDTO.setSubjectIDs(subjectIDs);
+                    }
                     // Set class information into StudentDTO
                     studentDTO.setStudentClass(classDTO);
-
                     return studentDTO;
                 })
                 .collect(Collectors.toList());
