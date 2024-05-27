@@ -6,14 +6,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.smsytem.students.security.JwtAuthenticationEntryPoint;
 
 import lombok.AllArgsConstructor;
 
@@ -21,10 +19,9 @@ import lombok.AllArgsConstructor;
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig {
-
-
+    private UserDetailsService userDetailsService;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
@@ -44,16 +41,4 @@ public class SpringSecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-   
-    @Bean
-    public UserDetailsService userDetailsService() {
-    PasswordEncoder encoder =
-    PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    UserDetails jhon =
-    User.builder().username("jhon").password(encoder.encode("1234")).roles("USER").build();
-    UserDetails admin =
-    User.builder().username("admin").password(encoder.encode("password")).roles("ADMIN")
-    .build();
-    return new InMemoryUserDetailsManager(jhon, admin);
-    }
 }
