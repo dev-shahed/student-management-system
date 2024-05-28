@@ -32,7 +32,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER')")
     @PostMapping()
     public ResponseEntity<?> creatingStudent(@RequestBody StudentDTO studentDTO) {
         try {
@@ -46,6 +46,7 @@ public class StudentController {
     }
 
     // retrieve all students..
+    @PreAuthorize("hasAnyRole('STUDENT','TEACHER','ADMIN')")
     @GetMapping()
     public ResponseEntity<?> getAllStudents() {
         try {

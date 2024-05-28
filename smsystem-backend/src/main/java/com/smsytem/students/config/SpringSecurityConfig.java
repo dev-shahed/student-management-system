@@ -33,12 +33,12 @@ public class SpringSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> {
                     authorize
-                            .requestMatchers(HttpMethod.POST, "/api/teachers/**", "/api/classes/**", "/api/subjects/**",
+                            .requestMatchers("/api/teachers/**", "/api/classes/**", "/api/subjects/**",
                                     "/api/students/**")
-                            .hasAnyRole("ADMIN", "TEACHER", "STUDENT");
-                    authorize
-                            .requestMatchers(HttpMethod.POST, "/api/students/**")
                             .hasAnyRole("TEACHER", "ADMIN");
+                    authorize
+                            .requestMatchers(HttpMethod.GET, "/api/students/**")
+                            .hasAnyRole("TEACHER", "ADMIN", "STUDENT");
                     // Allow public access to authentication endpoints and error page
                     authorize
                             .requestMatchers("/api/auth/**", "/error")
