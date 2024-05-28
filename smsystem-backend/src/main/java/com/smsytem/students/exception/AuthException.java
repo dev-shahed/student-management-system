@@ -12,6 +12,10 @@ public class AuthException extends RuntimeException {
 
     public AuthException(String message) {
         super(message);
-        this.errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, message);
+        this.errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN, "You are not authorized to access this resource");
+    }
+
+    public ErrorResponse getErrorResponse() {
+        return errorResponse;
     }
 }

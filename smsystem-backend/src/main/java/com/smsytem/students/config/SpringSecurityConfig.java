@@ -1,17 +1,21 @@
 package com.smsytem.students.config;
 
+import static org.springframework.security.config.Customizer.*;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.smsytem.students.security.JwtAuthenticationEntryPoint;
+import com.smsytem.students.security.JwtAuthenticationFilter;
 
 import lombok.AllArgsConstructor;
 
@@ -19,15 +23,38 @@ import lombok.AllArgsConstructor;
 @EnableWebSecurity
 @Configuration
 public class SpringSecurityConfig {
-    private UserDetailsService userDetailsService;
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.disable()).csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/**").permitAll()
-                        .anyRequest()
-                        .authenticated());
+        http.cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorize -> {
+                    authorize
+                            .requestMatchers(HttpMethod.POST, "/api/teachers/**", "/api/classes/**", "/api/subjects/**",
+                                    "/api/students/**")
+                            .hasAnyRole("ADMIN", "TEACHER", "STUDENT");
+                    authorize
+                            .requestMatchers(HttpMethod.POST, "/api/students/**")
+                            .hasAnyRole("TEACHER", "ADMIN");
+                    // Allow public access to authentication endpoints and error page
+                    authorize
+                            .requestMatchers("/api/auth/**", "/error")
+                            .permitAll();
+                    // Require authentication for any other requests
+                    authorize
+                            .anyRequest()
+                            .authenticated();
+                })
+                .httpBasic(withDefaults());
+
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -40,5 +67,4 @@ public class SpringSecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }

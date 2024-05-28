@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping()
     public ResponseEntity<?> creatingStudent(@RequestBody StudentDTO studentDTO) {
         try {
@@ -72,6 +74,7 @@ public class StudentController {
     }
 
     // update an existing student.
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> studentUpdate(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
         try {
@@ -87,6 +90,7 @@ public class StudentController {
     }
 
     // delete an student..
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
         try {

@@ -2,6 +2,7 @@ package com.smsytem.students.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("api/classes")
 public class ClassOrSectionController {
     private ClassOrSectionService classOrSectionService;
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> creatingClass(@RequestBody ClassDTO classDTO) {
         try {
@@ -38,7 +39,7 @@ public class ClassOrSectionController {
         }
     }
 
-    // retrieve single guardian
+    // retrieve single class
     @GetMapping("/{id}")
     public ResponseEntity<?> ClassOrSectionById(@PathVariable Long id, HttpServletRequest request) {
         try {
@@ -49,7 +50,8 @@ public class ClassOrSectionController {
         }
     }
 
-    // delete an guardian
+    // delete a class
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteClassOrSection(@PathVariable Long id) {
         try {
