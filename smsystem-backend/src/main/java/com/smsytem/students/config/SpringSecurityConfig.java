@@ -24,47 +24,49 @@ import lombok.AllArgsConstructor;
 @Configuration
 public class SpringSecurityConfig {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.disable())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> {
-                    authorize
-                            .requestMatchers("/api/teachers/**", "/api/classes/**", "/api/subjects/**",
-                                    "/api/students/**")
-                            .hasAnyRole("TEACHER", "ADMIN");
-                    authorize
-                            .requestMatchers(HttpMethod.GET, "/api/students/**")
-                            .hasAnyRole("TEACHER", "ADMIN", "STUDENT");
-                    // Allow public access to authentication endpoints and error page
-                    authorize
-                            .requestMatchers("/api/auth/**", "/error")
-                            .permitAll();
-                    // Require authentication for any other requests
-                    authorize
-                            .anyRequest()
-                            .authenticated();
-                })
-                .httpBasic(withDefaults());
+        @Bean
+        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http.cors(cors -> cors.disable())
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(authorize -> {
+                                        authorize
+                                                        .requestMatchers("/api/teachers/**", "/api/classes/**",
+                                                                        "/api/subjects/**",
+                                                                        "/api/students/**")
+                                                        .hasAnyRole("TEACHER", "ADMIN");
+                                        authorize
+                                                        .requestMatchers(HttpMethod.GET, "/api/students/**")
+                                                        .hasAnyRole("TEACHER", "ADMIN", "STUDENT");
+                                        // Allow public access to authentication endpoints and error page
+                                        authorize
+                                                        .requestMatchers("/api/auth/**", "/error")
+                                                        .permitAll();
+                                        // Require authentication for any other requests
+                                        authorize.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll();
+                                        authorize
+                                                        .anyRequest()
+                                                        .authenticated();
+                                })
+                                .httpBasic(withDefaults());
 
-        http.exceptionHandling(exception -> exception
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+                http.exceptionHandling(exception -> exception
+                                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+                return configuration.getAuthenticationManager();
+        }
 }
