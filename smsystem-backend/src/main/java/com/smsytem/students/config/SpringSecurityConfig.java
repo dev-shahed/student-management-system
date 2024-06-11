@@ -32,14 +32,15 @@ public class SpringSecurityConfig {
                 http.cors(cors -> cors.disable())
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authorize -> {
-                                        authorize
-                                                        .requestMatchers("/api/teachers/**", "/api/classes/**",
-                                                                        "/api/subjects/**",
-                                                                        "/api/students/**")
+                                        authorize.requestMatchers(HttpMethod.POST, "/api/teachers/**",
+                                                        "/api/classes/**",
+                                                        "/api/subjects/**")
                                                         .hasAnyRole("TEACHER", "ADMIN");
-                                        authorize
-                                                        .requestMatchers(HttpMethod.GET, "/api/students/**")
-                                                        .hasAnyRole("TEACHER", "ADMIN", "STUDENT");
+                                        // authorize
+                                        // .requestMatchers(HttpMethod.GET, "/api/students/**")
+                                        // .hasAnyRole("TEACHER", "ADMIN", "STUDENT");
+                                        authorize.requestMatchers(HttpMethod.GET, "/api/students/**", "/api/classes/**",
+                                                        "/api/subjects/**").permitAll();
                                         // Allow public access to authentication endpoints and error page
                                         authorize
                                                         .requestMatchers("/api/auth/**", "/error")
