@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.3</version>
+		<version>2.7.14</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.smsytem</groupId>
@@ -15,7 +15,9 @@
 	<name>smsystem</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>12</java.version>
+		<maven.compiler.source>12</maven.compiler.source>
+		<maven.compiler.target>12</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -32,10 +34,18 @@
 			<version>3.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>6.2.3</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
 		</dependency>
+		
+		<!-- Environment Variables Support -->
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!-- Removed explicit version - will use Spring Boot managed version -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -82,11 +92,7 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.3.0</version>
-		</dependency>
+		<!-- Removed springdoc - using springfox instead for Spring Boot 2.x -->
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -106,12 +112,7 @@
 			<version>3.0.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>4.0.1</version> <!-- Adjust version as needed -->
-			<scope>provided</scope> <!-- This scope is used for servlet containers like Tomcat -->
-		</dependency>
+		<!-- Removed javax.servlet - Spring Boot 2.x handles this automatically -->
 
 
 	</dependencies>
