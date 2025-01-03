@@ -1,19 +1,20 @@
 package com.smsytem.students.dto;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Student DTO without nested objects - FIXED VERSION
- * Removed nested ClassDTO to prevent circular references and over-fetching
+ * Detailed Student DTO with additional information
+ * Used when full student details with class info are needed
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDTO {
+public class StudentDetailedDTO {
     private Long studentID;
     private String firstName;
     private String lastName;
@@ -29,14 +30,18 @@ public class StudentDTO {
     private String address;
     private String city;
     
-    // Class information - flattened instead of nested
+    // Class information (flattened, not nested)
     private Long classID;
-    private String className; // Just the name, not the full ClassDTO object
+    private String className;
+    private String classDescription;
+    private Long classTeacherID;
+    private String classTeacherName;
+    private Set<Long> subjectIDs;
     
     // Guardian Information
     private String guardianFirstName;
     private String guardianLastName;
     private String guardianPhoneNumber;
     private String guardianEmail;
-    private String relationship; // Fixed typo: was "Relationship"
+    private String relationship;
 }

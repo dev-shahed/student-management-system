@@ -3,31 +3,30 @@ package com.smsytem.students.dto;
 import java.util.Collections;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+/**
+ * Class DTO without nested objects - FIXED VERSION
+ * Removed nested TeacherDTO to prevent circular references and over-fetching
+ */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ClassDTO {
     private Long classID;
     private String className;
     private String descriptions;
+    
+    // Teacher information - flattened instead of nested
     private Long teacherID;
-    @JsonIgnoreProperties({ "joiningDate", "salary", "salaryStatus", "imageLink", "address", "nationality" })
-    private TeacherDTO classTeacher;
-    @JsonInclude(Include.NON_NULL)
+    private String teacherName; // Just the name, not the full TeacherDTO object
+    
     private Set<Long> subjectIDs;
+    private Integer totalStudents; // Count of students in this class
 
     public Set<Long> getSubjectIDs() {
         return subjectIDs != null ? subjectIDs : Collections.emptySet();
     }
-
 }

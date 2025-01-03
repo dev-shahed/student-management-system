@@ -7,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Student DTO without nested objects - FIXED VERSION
- * Removed nested ClassDTO to prevent circular references and over-fetching
+ * Basic Student DTO without nested objects
+ * Used for most API responses to avoid over-fetching
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDTO {
+public class StudentBasicDTO {
     private Long studentID;
     private String firstName;
     private String lastName;
@@ -29,14 +29,14 @@ public class StudentDTO {
     private String address;
     private String city;
     
-    // Class information - flattened instead of nested
+    // Reference IDs only - no nested objects
     private Long classID;
-    private String className; // Just the name, not the full ClassDTO object
+    private String className; // Just the name, not the full object
     
     // Guardian Information
     private String guardianFirstName;
     private String guardianLastName;
     private String guardianPhoneNumber;
     private String guardianEmail;
-    private String relationship; // Fixed typo: was "Relationship"
+    private String relationship;
 }
