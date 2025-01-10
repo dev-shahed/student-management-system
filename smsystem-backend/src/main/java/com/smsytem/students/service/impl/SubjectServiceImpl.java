@@ -15,7 +15,7 @@ import com.smsytem.students.repository.SubjectRepository;
 import com.smsytem.students.repository.TeacherRepository;
 import com.smsytem.students.service.SubjectService;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
