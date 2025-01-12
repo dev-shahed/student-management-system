@@ -20,7 +20,7 @@ import com.smsytem.students.exception.AuthException;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.SubjectService;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

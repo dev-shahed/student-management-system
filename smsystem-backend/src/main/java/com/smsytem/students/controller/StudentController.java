@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smsytem.students.dto.StudentDTO;
+import com.smsytem.students.dto.StudentDetailedDTO;
+
 import com.smsytem.students.exception.ApiResponse;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.StudentService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import javax.servlet.http.HttpServletRequest;
 
-@AllArgsConstructor
 @RestController
 @CrossOrigin("*")
 @RequestMapping("api/students")
@@ -73,6 +73,36 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
         }
     }
+
+    // retrieve detailed student information including class details.
+    @GetMapping("/{id}/detailed")
+    public ResponseEntity<?> studentDetailedById(@PathVariable Long id) {
+        try {
+            StudentDetailedDTO student = studentService.getStudentDetailedById(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiResponse.success("Student detailed information retrieved successfully", student));
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getErrorResponse());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Failed to retrieve student details"));
+        }
+    }
+
+    // get students by class
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<?> studentsByClass(@PathVariable Long classId) {
+        try {
+            List<StudentDTO> students = studentService.getStudentsByClassId(classId);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(ApiResponse.success("Class students retrieved successfully", students));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Failed to retrieve class students"));
+        }
+    }
+
+
 
     // update an existing student.
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")

@@ -17,7 +17,7 @@ import com.smsytem.students.exception.ApiResponse;
 import com.smsytem.students.exception.ResourceNotFoundException;
 import com.smsytem.students.service.ClassOrSectionService;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
