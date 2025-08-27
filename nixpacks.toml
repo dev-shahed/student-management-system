@@ -1,0 +1,13 @@
+[phases.setup]
+nixPkgs = ['openjdk12']
+
+[phases.build]
+dependsOn = ['setup']
+cmds = [
+    'cd smsystem-backend',
+    'chmod +x ./mvnw',
+    './mvnw clean package -DskipTests'
+]
+
+[start]
+cmd = 'java -Dserver.port=$PORT -jar smsystem-backend/target/smsystem-0.0.1-SNAPSHOT.jar'
