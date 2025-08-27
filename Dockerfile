@@ -7,7 +7,7 @@ WORKDIR /app
 # Install curl for health checks
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Copy the Spring Boot project files
+# Copy Maven wrapper and project files
 COPY smsystem-backend/pom.xml ./
 COPY smsystem-backend/mvnw ./
 COPY smsystem-backend/mvnw.cmd ./
@@ -25,12 +25,12 @@ COPY smsystem-backend/src ./src
 # Build the application
 RUN ./mvnw clean package -DskipTests -B
 
-# Expose port (Render sets PORT env var)
-EXPOSE $PORT
+# Expose default port (required by Docker; Render will override at runtime)
+EXPOSE 8080
 
 # Health check endpoint
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:${PORT:-8080}/api/auth/health || exit 1
+    CMD curl -f http://localhost:8080/api/auth/health || exit 1
 
-# Run the application
-CMD ["java", "-Dserver.port=${PORT:-8080}", "-jar", "target/smsystem-0.0.1-SNAPSHOT.jar"]
+# Run the application using shell form to allow env var expansion
+CMD sh -c "java -Dserver.port=${PORT:-8080} -jar target/smsystem-0.0.1-SNAPSHOT.jar"
