@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: student-management-system
+    env: java
+    plan: free
+    rootDir: smsystem-backend
+    buildCommand: chmod +x ./mvnw && ./mvnw clean package -DskipTests
+    startCommand: java -Dserver.port=$PORT -jar target/smsystem-0.0.1-SNAPSHOT.jar
+    healthCheckPath: /api/auth/health
+    autoDeploy: false
+    envVars:
+      - key: NEON_DB_URL
+        value: postgresql://productservice_owner:mAKgW4Iy2QsD@ep-wild-glitter-a5dkioil-pooler.us-east-2.aws.neon.tech/productservice?sslmode=require
+      - key: NEON_DB_USERNAME  
+        value: productservice_owner
+      - key: NEON_DB_PASSWORD
+        value: mAKgW4Iy2QsD
+      - key: SPRING_SECURITY_USERNAME
+        value: admin
+      - key: SPRING_SECURITY_PASSWORD
+        value: SecureAdminPassword123!
+      - key: JWT_SECRET
+        value: super-secure-jwt-secret-change-this-in-production-render
+      - key: JWT_EXPIRATION_TIME
+        value: 86400000

@@ -6,6 +6,10 @@
 .env.local
 .env.production
 .env.staging
+
+# Deployment logs
+render.log
+deployment.log
 .env.development
 *.env
 
