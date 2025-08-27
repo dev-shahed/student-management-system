@@ -1,5 +1,5 @@
 # Render.com optimized Dockerfile for subdirectory project
-FROM openjdk:12-jdk-slim
+FROM openjdk:17-jdk-slim
 
 # Set working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ COPY smsystem-backend/.mvn ./.mvn
 # Make mvnw executable
 RUN chmod +x ./mvnw
 
-# Download dependencies (for better Docker layer caching)
+# Download dependencies (better Docker layer caching)
 RUN ./mvnw dependency:go-offline -B
 
 # Copy source code
@@ -25,7 +25,7 @@ COPY smsystem-backend/src ./src
 # Build the application
 RUN ./mvnw clean package -DskipTests -B
 
-# Expose port (Render will set PORT env var)
+# Expose port (Render sets PORT env var)
 EXPOSE $PORT
 
 # Health check endpoint
