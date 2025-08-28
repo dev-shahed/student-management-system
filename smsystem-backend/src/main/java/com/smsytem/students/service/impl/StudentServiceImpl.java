@@ -7,10 +7,8 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.smsytem.students.dto.ClassDTO;
 import com.smsytem.students.dto.StudentDTO;
 import com.smsytem.students.dto.StudentDetailedDTO;
-import com.smsytem.students.dto.StudentWithClassDTO;
 import com.smsytem.students.entity.ClassOrSection;
 import com.smsytem.students.entity.Student;
 import com.smsytem.students.entity.Subject;
@@ -145,130 +143,6 @@ public List<StudentDTO> getAllStudents() {
                     return studentDTO;
                 })
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public StudentWithClassDTO getStudentWithPopulatedClass(Long studentId) {
-        // This is like MongoDB populate - fetches related data in one query
-        Student student = studentRepository.findStudentWithClassDetails(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with ID: " + studentId));
-        
-        student.calculateFeesDue();
-        
-        StudentWithClassDTO dto = new StudentWithClassDTO();
-        
-        // Map basic student info
-        dto.setStudentID(student.getStudentID());
-        dto.setFirstName(student.getFirstName());
-        dto.setLastName(student.getLastName());
-        dto.setEmail(student.getEmail());
-        dto.setRoll(student.getRoll());
-        dto.setHeight(student.getHeight());
-        dto.setDateOfBirth(student.getDateOfBirth());
-        dto.setTotalFees(student.getTotalFees());
-        dto.setFeesPaid(student.getFeesPaid());
-        dto.setFeesDue(student.getFeesDue());
-        dto.setPhoneNumber(student.getPhoneNumber());
-        dto.setImageLink(student.getImageLink());
-        dto.setAddress(student.getAddress());
-        dto.setCity(student.getCity());
-        dto.setGuardianFirstName(student.getGuardianFirstName());
-        dto.setGuardianLastName(student.getGuardianLastName());
-        dto.setGuardianPhoneNumber(student.getGuardianPhoneNumber());
-        dto.setGuardianEmail(student.getGuardianEmail());
-        dto.setRelationship(student.getRelationship());
-        
-        // Populate class information (like MongoDB populate)
-        if (student.getStudentClass() != null) {
-            StudentWithClassDTO.ClassPopulatedInfo classInfo = new StudentWithClassDTO.ClassPopulatedInfo();
-            classInfo.setClassID(student.getStudentClass().getClassID());
-            classInfo.setClassName(student.getStudentClass().getClassName());
-            classInfo.setDescriptions(student.getStudentClass().getDescriptions());
-            
-            // Populate teacher information
-            if (student.getStudentClass().getClassTeacher() != null) {
-                StudentWithClassDTO.ClassPopulatedInfo.TeacherBasicInfo teacherInfo = 
-                    new StudentWithClassDTO.ClassPopulatedInfo.TeacherBasicInfo();
-                teacherInfo.setTeacherID(student.getStudentClass().getClassTeacher().getTeacherID());
-                teacherInfo.setFirstName(student.getStudentClass().getClassTeacher().getFirstName());
-                teacherInfo.setLastName(student.getStudentClass().getClassTeacher().getLastName());
-                teacherInfo.setEmail(student.getStudentClass().getClassTeacher().getEmail());
-                teacherInfo.setQualification(student.getStudentClass().getClassTeacher().getQualification());
-                
-                classInfo.setClassTeacher(teacherInfo);
-            }
-            
-            // Add subject IDs
-            if (student.getStudentClass().getSubjects() != null) {
-                Set<Long> subjectIDs = student.getStudentClass().getSubjects().stream()
-                        .map(Subject::getSubjectID)
-                        .collect(Collectors.toSet());
-                classInfo.setSubjectIDs(subjectIDs);
-            }
-            
-            dto.setClassInfo(classInfo);
-        }
-        
-        return dto;
-    }
-
-    @Override
-    public List<StudentWithClassDTO> getAllStudentsWithPopulatedClass() {
-        // Fetch all students with related data in one query (like MongoDB populate)
-        List<Student> students = studentRepository.findAllStudentsWithClassDetails();
-        
-        return students.stream()
-                .map(student -> {
-                    student.calculateFeesDue();
-                    return mapToStudentWithClassDTO(student);
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<StudentWithClassDTO> searchStudentsByNameWithClass(String name) {
-        List<Student> students = studentRepository.findStudentsByNameWithClassDetails(name);
-        
-        return students.stream()
-                .map(student -> {
-                    student.calculateFeesDue();
-                    return mapToStudentWithClassDTO(student);
-                })
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Helper method to map Student entity to StudentWithClassDTO
-     * This is like MongoDB populate mapping
-     */
-    private StudentWithClassDTO mapToStudentWithClassDTO(Student student) {
-        StudentWithClassDTO dto = modelMapper.map(student, StudentWithClassDTO.class);
-        
-        // Populate class information
-        if (student.getStudentClass() != null) {
-            StudentWithClassDTO.ClassPopulatedInfo classInfo = 
-                modelMapper.map(student.getStudentClass(), StudentWithClassDTO.ClassPopulatedInfo.class);
-            
-            // Populate teacher information
-            if (student.getStudentClass().getClassTeacher() != null) {
-                StudentWithClassDTO.ClassPopulatedInfo.TeacherBasicInfo teacherInfo = 
-                    modelMapper.map(student.getStudentClass().getClassTeacher(), 
-                                  StudentWithClassDTO.ClassPopulatedInfo.TeacherBasicInfo.class);
-                classInfo.setClassTeacher(teacherInfo);
-            }
-            
-            // Add subject IDs
-            if (student.getStudentClass().getSubjects() != null) {
-                Set<Long> subjectIDs = student.getStudentClass().getSubjects().stream()
-                        .map(Subject::getSubjectID)
-                        .collect(Collectors.toSet());
-                classInfo.setSubjectIDs(subjectIDs);
-            }
-            
-            dto.setClassInfo(classInfo);
-        }
-        
-        return dto;
     }
 
     @Override

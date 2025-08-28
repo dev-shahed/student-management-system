@@ -186,7 +186,8 @@ This School Management System is designed to handle all aspects of school admini
 3. **Build and run the application:**
    ```bash
    ./mvnw clean install
-   ./mvnw spring-boot:run
+   ./mvnw spring-boot:run 
+   or ./start.sh
    ```
 
    The backend will start on `http://localhost:8080`
